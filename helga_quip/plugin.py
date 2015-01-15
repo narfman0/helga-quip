@@ -7,22 +7,25 @@ _help_text = 'Match quips and other witticisms. Usage:\
 
 def _quip_manage(client, channel, nick, message, args):
     """ Add/remove quip/phrase to stash """
-    regex = '.*' + args[2] + '.*'
-    phrase = {'kind':args[1], 'regex':regex}
+    phrase = {'kind':args[1], 'regex':args[2]}
     if args[0] == 'add':
         phrase['nick'] = nick
         db.helga_quip.entries.insert(phrase)
     elif args[0] == 'remove':
         db.helga_quip.entries.remove(phrase)
+    elif args[0] == 'drop':
+        db.helga_quip.drop()
     return random_ack()
 
 def _quip_respond(message):
     """ Search for matching quip, respond if exists """
     for phrase in db.helga_quip.entries.find():
-        result = re.match(phrase['regex'], message)
+        result = re.search(phrase['regex'], message, re.I)
         if result:
-            return ('success', phrase['kind'])
-    return ''
+            quip = phrase['kind']
+            if '{0}' in quip:
+                quip = quip.format(result.group(0))
+            return ('success', quip)
 
 @match(_quip_respond)
 @command('quip', aliases=['joke', 'quips'], help=_help_text, shlex=True)
