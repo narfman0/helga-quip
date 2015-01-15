@@ -3,7 +3,10 @@ from helga.db import db
 from helga.plugins import command, match, random_ack
 
 _help_text = 'Match quips and other witticisms. Usage:\
-1. helga quip add/remove <quip_kind> <quip_regex>'
+!quip add/remove <quip_kind> <quip_regex>\
+Example:\
+1. !quip add "thats what she said" "(it|that|this) (sounds|is|was) really hard"\
+2. !quip add "your mom {0}" "(looks|is) really (leet|fat|awesome)"'
 
 def _quip_manage(client, channel, nick, message, args):
     """ Add/remove quip/phrase to stash """
