@@ -1,3 +1,4 @@
+""" Helga entry point for plugin """
 import re
 from helga.db import db
 from helga.plugins import command, match, random_ack
@@ -10,18 +11,19 @@ Example:\
 
 def _quip_manage(client, channel, nick, message, args):
     """ Add/remove quip/phrase to stash """
-    phrase = {'kind':args[1], 'regex':args[2]}
-    if args[0] == 'add':
-        phrase['nick'] = nick
-        try:
-            re.compile(phrase['regex'])
-        except:
-            return 'Invalid regex: %s' % phrase['regex']
-        db.helga_quip.entries.insert(phrase)
-    elif args[0] == 'remove':
-        db.helga_quip.entries.remove(phrase)
-    elif args[0] == 'drop':
+    if args[0] == 'drop':
         db.helga_quip.entries.drop()
+    else:
+        phrase = {'kind':args[1], 'regex':args[2]}
+        if args[0] == 'add':
+            phrase['nick'] = nick
+            try:
+                re.compile(phrase['regex'])
+            except:
+                return 'Invalid regex: %s' % phrase['regex']
+            db.helga_quip.entries.insert(phrase)
+        elif args[0] == 'remove':
+            db.helga_quip.entries.remove(phrase)
     return random_ack()
 
 def _quip_respond(message):
