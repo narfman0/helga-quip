@@ -32,11 +32,11 @@ setup(
     install_requires=requirements,
     test_suite='',
     entry_points = dict(
-        helga_plugins=[
-            'quip = helga_quip.plugin:quip',
-        ],
         helga_webhooks=[
             'quip-list = helga_quip.plugin:quip_list',
+        ],
+        helga_plugins=[
+            'quip = helga_quip.plugin:quip',
         ],
     ),
 )

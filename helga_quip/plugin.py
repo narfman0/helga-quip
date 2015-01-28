@@ -50,4 +50,7 @@ def quip(client, channel, nick, message, *args):
 
 @route(r'/helga-quip')
 def quip_list(request, client):
-    return ['{},{}\n'.format(phrase['regex'], phrase['kind']) for phrase in db.helga_quip.entries.find()]
+    """ Return table of current entries in quip for easy remove/manipulate"""
+    #TODO use mustache
+    entries = [phrase['regex'] + ' ' + phrase['kind'] + '\n' for phrase in db.helga_quip.entries.find()]
+    return ''.join(entries)
