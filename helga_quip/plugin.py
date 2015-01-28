@@ -1,6 +1,7 @@
 import re
 from helga.db import db
 from helga.plugins import command, match, random_ack
+from helga.plugins.webhooks import route
 
 _help_text = 'Match quips and other witticisms. Usage:\
 !quip add/remove <quip_kind> <quip_regex>\
@@ -44,3 +45,7 @@ def quip(client, channel, nick, message, *args):
         return _quip_manage(client, channel, nick, message, args[1])
     if args[0][0] == 'success':
         return args[0][1]
+
+@route(r'/helga-quip')
+def quip_list(request, client):
+    return ['{},{}\n'.format(phrase['regex'], phrase['kind']) for phrase in db.helga_quip.entries.find()]
