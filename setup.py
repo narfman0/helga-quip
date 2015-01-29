@@ -27,16 +27,15 @@ setup(
     license='LICENSE',
     packages=find_packages(),
     include_package_data=True,
-    py_modules=['helga_quip.plugin'],
     zip_safe=True,
     install_requires=requirements,
     test_suite='',
     entry_points = dict(
-        helga_webhooks=[
-            'quip-list = helga_quip.plugin:quip_list',
-        ],
         helga_plugins=[
             'quip = helga_quip.plugin:quip',
+        ],
+        helga_webhooks=[
+            'quip-route = helga_quip.webhooks:quip_route',
         ],
     ),
 )
