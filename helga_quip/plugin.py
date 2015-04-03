@@ -1,5 +1,5 @@
 """ Helga entry point for plugin """
-import re
+import re, requests
 from helga.db import db
 from helga.plugins import command, match, random_ack
 
@@ -13,6 +13,11 @@ def _quip_manage(client, channel, nick, message, args):
     """ Add/remove quip/phrase to stash """
     if args[0] == 'drop':
         db.helga_quip.entries.drop()
+    elif args[0] == 'dump':
+        quips = [p['regex'] + ' | ' + p['kind'] for p in db.helga_quip.entries.find()]
+        payload = {'title':'helga-quip dump', 'content': '\n'.join(quips)}
+        r = requests.post("http://dpaste.com/api/v2/", payload)
+        return r.headers['location']
     else:
         phrase = {'kind':args[1], 'regex':args[2]}
         if args[0] == 'add':
