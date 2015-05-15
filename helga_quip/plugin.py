@@ -15,6 +15,8 @@ def _quip_manage(client, channel, nick, message, args):
         db.helga_quip.entries.drop()
     elif args[0] == 'dump':
         quips = [p['regex'] + ' | ' + p['kind'] for p in db.helga_quip.entries.find()]
+        if not quips:
+            return "Quip database empty"
         payload = {'title':'helga-quip dump', 'content': '\n'.join(quips)}
         r = requests.post("http://dpaste.com/api/v2/", payload)
         return r.headers['location']
@@ -37,8 +39,24 @@ def _quip_respond(message):
         result = re.search(phrase['regex'], message, re.I)
         if result:
             quip = phrase['kind']
-            if '{0}' in quip:
-                quip = quip.format(result.group(0))
+            # TODO this will handle either named groups or positional. it needs
+            # some work to support hybrid backreferenced named and positonal
+            # groups, but I may implement in the near future. putting in this
+            # current work as value added, but hopefully I'll not be lazy soon.
+
+            # take care of backreferenced named groups, ez mode
+            if result.groupdict():
+                try:
+                    quip = quip.format(**result.groupdict())
+                except IndexError:
+                    # really python, no partial format support? i have
+                    # to write my own formatter (using different $ syntax) or
+                    # override a dictionaries __missing__? lame, defer for now
+                    # http://stackoverflow.com/questions/11283961/partial-string-formatting
+                    pass
+            # take care of positional arguments
+            else:
+                quip = quip.format(*result.groups())
             return ('success', quip)
 
 @match(_quip_respond)
