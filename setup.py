@@ -1,11 +1,10 @@
-from pip.req import parse_requirements
 from setuptools import setup, find_packages
-
 from pip.req import parse_requirements
+from pip.download import PipSession
 from helga_quip import __version__ as version
 
 requirements = [
-    str(req.req) for req in parse_requirements('requirements.txt')
+    str(req.req) for req in parse_requirements('requirements.txt', session=PipSession())
 ]
 
 setup(
