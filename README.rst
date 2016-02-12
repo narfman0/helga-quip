@@ -17,7 +17,7 @@ Usage
 Quip may be used for oneliners or elaborate your mom or thats what she said
 jokes. The syntax is:
 
-``!quip add <quip_kind> <quip_regex>``
+``!quip add <quip_regex> <quip_kind>``
 
 quip_kind is the kind of quip you'd like to respond with, and can be a templated
 response. It could simply be "Your mom" or "That's what she said", but the user
@@ -30,21 +30,21 @@ do, like "that (sounds|is|was) really hard". The search is case insensitive.
 
 Example::
 
-    !quip add "thats what she said" "(it|that|this) (sounds|is|was) really hard"
+    !quip add "(it|that|this) (sounds|is|was) really hard" "thats what she said"
     <unwitting user>: i took this test last night, and it was really hard
     <bot>: thats what she said
     <unwitting user>: aww bot, your wit knows no bounds! ha ha!
 
 Example2::
 
-    !quip add "your mom {0}" "(looks|is) really (leet|fat|awesome)"
+    !quip add "(looks|is) really (leet|fat|awesome)" "your mom {0} really {1}"
     <irc noob>: huh this game looks really awesome
     <bot>: your mom looks really awesome
     <irc noob>: oh bot! you and the jokes, they keep coming so hard!
 
 Example3 (named backreferences)::
 
-    !quip add "your mom is {action}" "(?:(?:i|he|you) (?:is|am)) (?P<action>excited|giddy)"
+    !quip add "(?:(?:i|he|you) (?:is|am)) (?P<action>excited|giddy)" "your mom is {action}"
     <foolish scrub>: man, i am excited for the concert!
     <bot>: your mom is excited
     <foolish scrub>: YOUR MOM IS...
@@ -52,18 +52,18 @@ Example3 (named backreferences)::
 
 Example4 (positonals)::
 
-    !quip add "your mom is {0} of {1}" "[am|is] (lord|king) of (me|him|her|she|he)"
+    !quip add "[am|is] (lord|king) of (me|him|her|she|he)" "your mom is {0} of {1}"
     <naive user>: ...man, i am lord of him! shot right in the face, and he wasn't doing nothin'!
     <bot>: your mom is lord of him
     <naive user> sobs at the truth of it all
 
 ``!quip dump``
 
-Dumps to the paste service dpaste with | delimited entries of 'regex | kind'
+Dumps to the paste service dpaste with entries of '"regex" "kind"'
 
 License
 -------
 
-Copyright (c) 2015 Jon Robison
+Copyright (c) 2016 Jon Robison
 
 See included LICENSE for licensing information
