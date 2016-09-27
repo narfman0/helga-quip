@@ -1,6 +1,13 @@
+from pip.download import PipSession
+from pip.req import parse_requirements
 from setuptools import setup, find_packages
+
 from helga_quip import __version__ as version
-from parse_requirements_not_suckily import parse_requirements
+
+
+requirements = [
+    str(req.req) for req in parse_requirements('requirements.txt', session=PipSession())
+]
 
 
 setup(
@@ -23,7 +30,7 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     zip_safe=True,
-    install_requires=parse_requirements(),
+    install_requires=requirements,
     test_suite='',
     entry_points=dict(
         helga_plugins=[
