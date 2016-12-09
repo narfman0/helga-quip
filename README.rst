@@ -1,6 +1,12 @@
 helga-quip
 ======================
 
+.. image:: https://badge.fury.io/py/helga-quip.png
+    :target: https://badge.fury.io/py/helga-quip
+
+.. image:: https://travis-ci.org/narfman0/helga-quip.png?branch=master
+    :target: https://travis-ci.org/narfman0/helga-quip
+
 "Always with the witty retorts, that one"
 -quote that totally happened by a wise and ausipicious gentleman in reference
 to helga-quip

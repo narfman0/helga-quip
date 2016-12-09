@@ -1,13 +1,5 @@
-from pip.download import PipSession
-from pip.req import parse_requirements
 from setuptools import setup, find_packages
-
 from helga_quip import __version__ as version
-
-
-requirements = [
-    str(req.req) for req in parse_requirements('requirements.txt', session=PipSession())
-]
 
 
 setup(
@@ -30,14 +22,11 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     zip_safe=True,
-    install_requires=requirements,
-    test_suite='',
+    install_requires=['helga', 'requests'],
+    test_suite='tests',
     entry_points=dict(
         helga_plugins=[
             'quip = helga_quip.plugin:quip',
-        ],
-        helga_webhooks=[
-            'quip-route = helga_quip.webhooks:quip_route',
         ],
     ),
 )

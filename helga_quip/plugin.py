@@ -1,5 +1,6 @@
 """ Helga entry point for plugin """
-import re, requests
+import re
+import requests
 from helga.db import db
 from helga.plugins import command, match, random_ack
 
@@ -10,6 +11,7 @@ Example:\
 2. !quip add "(looks|is) really (leet|fat|awesome)" "your mom {0}"\
 3. !quip remove "(it|that|this) (sounds|is|was) really hard" "thats what she said"\
 4. !quip dump'
+
 
 def _quip_manage(client, channel, nick, message, args):
     """ Add/remove quip/phrase to stash """
@@ -34,6 +36,7 @@ def _quip_manage(client, channel, nick, message, args):
         elif args[0] == 'remove':
             db.helga_quip.entries.remove(phrase)
     return random_ack()
+
 
 def _quip_respond(message):
     """ Search for matching quip, respond if exists """
@@ -60,6 +63,7 @@ def _quip_respond(message):
             else:
                 quip = quip.format(*result.groups())
             return ('success', quip)
+
 
 @match(_quip_respond)
 @command('quip', aliases=['joke', 'quips'], help=_help_text, shlex=True)
