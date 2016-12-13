@@ -33,6 +33,7 @@ used, or named groups are supported now similar to (?P<name>expression).
 
 quip_regex is the searched regular expression to be matched. Any regex should
 do, like "that (sounds|is|was) really hard". The search is case insensitive.
+If there are multiple matches, a random response will be selected.
 
 Example::
 

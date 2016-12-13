@@ -1,6 +1,7 @@
 """ Helga entry point for plugin """
 import re
 import requests
+from random import choice
 from helga.db import db
 from helga.plugins import command, match, random_ack
 
@@ -21,11 +22,11 @@ def _quip_manage(client, channel, nick, message, args):
         quips = ['"' + p['regex'] + '" "' + p['kind'] + '"' for p in db.helga_quip.entries.find()]
         if not quips:
             return "Quip database empty"
-        payload = {'title':'helga-quip dump', 'content': '\n'.join(quips)}
+        payload = {'title': 'helga-quip dump', 'content': '\n'.join(quips)}
         r = requests.post("http://dpaste.com/api/v2/", payload)
         return r.headers['location']
     else:
-        phrase = {'kind':args[2], 'regex':args[1]}
+        phrase = {'kind': args[2], 'regex': args[1]}
         if args[0] == 'add':
             phrase['nick'] = nick
             try:
@@ -40,6 +41,7 @@ def _quip_manage(client, channel, nick, message, args):
 
 def _quip_respond(message):
     """ Search for matching quip, respond if exists """
+    results = []
     for phrase in db.helga_quip.entries.find():
         result = re.search(phrase['regex'], message, re.I)
         if result:
@@ -62,7 +64,10 @@ def _quip_respond(message):
             # take care of positional arguments
             else:
                 quip = quip.format(*result.groups())
-            return ('success', quip)
+            results.append(quip)
+    if results:
+        return ('success', choice(results))
+    return None
 
 
 @match(_quip_respond)

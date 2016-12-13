@@ -56,3 +56,13 @@ class TestResults(TestCase):
         db.helga_quip.entries.insert(quip)
         success, response = self.plugin._quip_respond('is really leet')
         self.assertEqual(response, 'your mom is really leet')
+
+    def test_response_multiple(self):
+        db.helga_quip.entries.insert_one({'kind': 'kind1', 'regex': 'regex1'})
+        db.helga_quip.entries.insert_one({'kind': 'kind2', 'regex': 'regex1'})
+        with mock.patch('helga_quip.plugin.choice', side_effect=lambda b: b[0]):
+            success, response = self.plugin._quip_respond('regex1')
+            self.assertEqual(response, 'kind1')
+        with mock.patch('helga_quip.plugin.choice', side_effect=lambda b: b[1]):
+            success, response = self.plugin._quip_respond('regex1')
+            self.assertEqual(response, 'kind2')
