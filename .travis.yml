@@ -4,8 +4,6 @@ python: 3.5
 env:
   - TOX_ENV=py35
   - TOX_ENV=py27
-  - TOX_ENV=py35
-  - TOX_ENV=py27
 
 matrix:
   fast_finish: true
